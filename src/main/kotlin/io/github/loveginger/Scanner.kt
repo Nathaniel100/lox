@@ -57,12 +57,22 @@ class Scanner(private val source: String) {
       '<' -> addToken(if (match('=')) TokenType.LESS_EQUAL else TokenType.LESS)
       '>' -> addToken(if (match('=')) TokenType.GREATER_EQUAL else TokenType.GREATER)
       '/' -> {
-        if (match('/')) {
-          while (peek() != '\n' && !isAtEnd()) {
-            advance()
-          }
-        } else {
-          addToken(TokenType.SLASH)
+        when {
+          match('/') ->
+            while (peek() != '\n' && !isAtEnd()) {
+              advance()
+            }
+          match('*') ->
+            while (!isAtEnd()) {
+              if (match('\n')) {
+                line++
+              } else if (match('*') && match('/')) {
+                break
+              } else {
+                advance()
+              }
+            }
+          else -> addToken(TokenType.SLASH)
         }
       }
       ' ', '\r', '\t' -> {
