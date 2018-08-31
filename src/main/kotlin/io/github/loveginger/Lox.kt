@@ -2,6 +2,7 @@ package io.github.loveginger
 
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.nio.charset.Charset
 import kotlin.system.exitProcess
 
 private var hadError = false
@@ -18,7 +19,7 @@ fun main(args: Array<String>) {
 }
 
 private fun runPrompt() {
-  val reader = BufferedReader(InputStreamReader(System.`in`))
+  val reader = BufferedReader(InputStreamReader(System.`in`, Charset.forName("UTF-8")))
   while (true) {
     print("> ")
     run(reader.readLine())

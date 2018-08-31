@@ -1,6 +1,7 @@
 plugins {
   id 'java'
   id 'org.jetbrains.kotlin.jvm' version '1.2.51'
+  id 'findbugs'
 }
 
 group 'io.github.loveginger'
@@ -22,4 +23,19 @@ compileKotlin {
 }
 compileTestKotlin {
   kotlinOptions.jvmTarget = "1.8"
+}
+
+findbugs {
+  ignoreFailures = false
+  toolVersion = "3.0.1"
+  sourceSets = [sourceSets.main]
+  excludeFilter = file("config/findbugs/excludeFilter.xml")
+  reportsDir = file("$project.buildDir/reports/findbugs")
+  effort = "max"
+}
+tasks.withType(FindBugs) {
+  reports {
+    xml.enabled false
+    html.enabled true
+  }
 }
