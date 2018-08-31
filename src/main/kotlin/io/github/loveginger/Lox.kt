@@ -3,7 +3,6 @@ package io.github.loveginger
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.Charset
-import kotlin.system.exitProcess
 
 private var hadError = false
 
@@ -13,7 +12,7 @@ fun main(args: Array<String>) {
     1 -> runFile(args[0])
     else -> {
       println("Usage: jlox [script]")
-      exitProcess(64)
+      System.exit(64)
     }
   }
 }
@@ -29,7 +28,7 @@ private fun runPrompt() {
 private fun runFile(file: String) {
 
   if (hadError) {
-    exitProcess(65)
+    System.exit(65)
   }
 }
 
