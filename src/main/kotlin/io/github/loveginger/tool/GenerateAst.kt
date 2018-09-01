@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     outputDir, "Expr", arrayListOf(
       "Binary: Expr left, Token operator, Expr right",
       "Grouping: Expr expression",
-      "Literal: Any value",
+      "Literal: Any? value",
       "Unary: Token operator, Expr right"
     )
   )
