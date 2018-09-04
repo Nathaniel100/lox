@@ -4,8 +4,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.Charset
 
-private var hadError = false
-
 fun main(args: Array<String>) {
   when (args.size) {
     0 -> runPrompt()
@@ -27,7 +25,7 @@ private fun runPrompt() {
 
 private fun runFile(file: String) {
 
-  if (hadError) {
+  if (Lox.hadError) {
     System.exit(65)
   }
 }
@@ -36,17 +34,31 @@ private fun runFile(file: String) {
 private fun run(source: String) {
   val scanner = Scanner(source)
   val tokens = scanner.scanTokens()
-
-  for (token in tokens) {
-    println(token)
+  val parser = Parser(tokens)
+  val expression = parser.parse()
+  if(Lox.hadError) {
+    return
   }
+  println(AstPrinter().print(expression!!))
 }
 
-fun error(line: Int, message: String) {
-  report(line, "", message)
-}
+object Lox {
+  var hadError = false
 
-private fun report(line: Int, where: String, message: String) {
-  System.err.println("[line $line] Error$where: $message")
-  hadError = true
+  fun error(line: Int, message: String) {
+    report(line, "", message)
+  }
+
+  fun error(token: Token, message: String) {
+    if (token.type === TokenType.EOF) {
+      report(token.line, " at end", message)
+    } else {
+      report(token.line, " at '${token.lexeme}'", message)
+    }
+  }
+
+  private fun report(line: Int, where: String, message: String) {
+    System.err.println("[line $line] Error$where: $message")
+    hadError = true
+  }
 }

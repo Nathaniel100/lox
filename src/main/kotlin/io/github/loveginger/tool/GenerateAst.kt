@@ -57,7 +57,12 @@ private fun defineVisitor(writer: PrintWriter, baseName: String, types: ArrayLis
   writer.println("  }")
 }
 
-private fun defineType(writer: PrintWriter, baseName: String, className: String, fieldList: String) {
+private fun defineType(
+  writer: PrintWriter,
+  baseName: String,
+  className: String,
+  fieldList: String
+) {
   val fieldStringBuilder = StringBuilder()
   val fields = fieldList.split(",")
   for (field in fields) {
@@ -69,4 +74,5 @@ private fun defineType(writer: PrintWriter, baseName: String, className: String,
   writer.println("  class $className($fieldInConstructor) : $baseName() {")
   writer.println("    override fun <R> accept(visitor: Visitor<R>) = visitor.visit$className$baseName(this)")
   writer.println("  }")
+  writer.println()
 }
